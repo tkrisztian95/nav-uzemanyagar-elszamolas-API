@@ -11,3 +11,21 @@ This service provides a specific API to get information from the open data sourc
 - Install requirements with command: `pip install -r requirements`
 - Start Flask app with command: `flask run`
 
+### APIs
+- /api/nav/uzemanyagarak/{year}/{month} 
+
+### Examlpe
+GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
+```
+{
+    "data": {
+        "benzin": "390",
+        "diesel": "406",
+        "lpg": "256",
+        "mixed": "427",
+        "month": "március"
+    }
+}
+```
+
+
