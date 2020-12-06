@@ -29,10 +29,10 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 ```
 
 # TODO:
-- [] Implement get data from archived years
-- [] Cache crawled content up to 5min
-- [] Error handling (unified api error response)
-- [] Write some tests
+- [ ] Implement get data from archived years
+- [ ] Cache crawled content up to 5min
+- [ ] Error handling (unified api error response)
+- [ ] Write some tests
 
 
 
