@@ -5,4 +5,4 @@ A NAV a weboldalán https://www.nav.gov.hu/ nyilvánosan  közzéteszi a tárgyh
 
 # (EN)
 ---
-This service provides a specific API to get information from the open data source https://www.nav.gov.hu/ site t
+This service provides a specific API to get information from the open data source https://www.nav.gov.hu/ site about fuel cost accounting.
