@@ -42,19 +42,21 @@ def getFromCurrentYear(month):
     URL = "https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html"
     data=crawl_page(URL)
     if month != None:
-        serialized = next((x for x in data if x.month == month), None).serialize()
-        return jsonify(data=[serialized])
-    else:
-        return jsonify(data=list(map(lambda item: item.serialize(), data)))
+        data = filter_by_month(data, month)
+    return jsonify(data=serialize(data))
 
 def getFromArchived(year, month):
     URL = "https://www.nav.gov.hu/nav/archiv/szolgaltatasok/uzemanyag_elszamolas/{}_uzemanyagar.html".format(year)
     data=crawl_page(URL)
     if month != None:
-        serialized = next((x for x in data if x.month == month), None).serialize()
-        return jsonify(data=[serialized])
-    else:
-        return jsonify(data=list(map(lambda item: item.serialize(), data)))
+        data = filter_by_month(data, month)
+    return jsonify(data=serialize(data))
+
+def filter_by_month(data, month):
+    return [next((x for x in data if x.month == month), None)]
+
+def serialize(data):
+    return list(map(lambda item: item.serialize(), data))
 
 def crawl_page(URL):
     page = requests.get(URL)
