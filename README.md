@@ -12,9 +12,34 @@ This service provides a specific API to get information from the open data sourc
 - Start Flask app with command: `flask run`
 
 ### APIs
+- /api
+- /api/nav/uzemanyagarak/{year}
 - /api/nav/uzemanyagarak/{year}/{month} 
 
-### Examlpe
+### Examples
+GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020
+```
+{
+    "data": [
+        {
+            "benzin": "364",
+            "diesel": "372",
+            "lpg": "247",
+            "mixed": "401",
+            "month": "december"
+        },
+        {
+            "benzin": "378",
+            "diesel": "369",
+            "lpg": "235",
+            "mixed": "415",
+            "month": "november"
+        },
+        ...
+    ]
+}
+```
+
 GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 ```
 {
@@ -29,9 +54,9 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 ```
 
 # TODO:
-- [ ] Implement get data from archived years
+- [X] Implement get data from archived years
 - [ ] Cache crawled content up to 5min
-- [ ] Error handling (unified api error response)
+- [X] Error handling (unified api error response)
 - [ ] Write some tests
 
 
