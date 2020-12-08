@@ -4,7 +4,11 @@ from bs4 import BeautifulSoup
 from flask import Flask, jsonify, make_response, abort, url_for, redirect
 
 from models import FuelAccountNorm
+from cache import SimpleDataCache
 import utils
+
+CACHE = SimpleDataCache(debug=True)
+
 
 def create_app():
     app = Flask(__name__)
@@ -25,7 +29,6 @@ def create_app():
             }
         }), 200)
 
-
     @app.route('/api/nav/uzemanyagarak/<year>')
     def getFuelNormByYear(year):
         if utils.valid_year(year):
@@ -34,7 +37,6 @@ def create_app():
             else:
                 return getFromArchived(year, None)
         return
-
 
     @app.route('/api/nav/uzemanyagarak/<year>/<month>')
     def getFuelNormByMonth(year, month):
@@ -52,7 +54,6 @@ def create_app():
         status_code = 404
         return make_response(response, status_code)
 
-
     @app.errorhandler(500)
     def internal_server_error(e):
         response = jsonify({'status': 500, 'error': 'internal server error',
@@ -65,19 +66,23 @@ def create_app():
 
 def getFromCurrentYear(month):
     URL = "https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html"
-    data = crawl_page(URL)
-    if month != None:
-        data = filter_by_month(data, month)
+    data = CACHE.getOrLoad(URL, crawl_page, URL)
+    data = doFilter(data, month)
     return jsonify(data=serialize(data))
 
 
 def getFromArchived(year, month):
     URL = "https://www.nav.gov.hu/nav/archiv/szolgaltatasok/uzemanyag_elszamolas/{}_uzemanyagar.html".format(
         year)
-    data = crawl_page(URL)
+    data = CACHE.getOrLoad(URL, crawl_page, URL)
+    data = doFilter(data, month)
+    return jsonify(data=serialize(data))
+
+
+def doFilter(data, month):
     if month != None:
         data = filter_by_month(data, month)
-    return jsonify(data=serialize(data))
+    return data
 
 
 def filter_by_month(data, month):
@@ -89,6 +94,7 @@ def serialize(data):
 
 
 def crawl_page(URL):
+    print('crawl_page()')
     page = requests.get(URL)
     if page.status_code == 404:
         abort(404)
