@@ -1,45 +1,66 @@
 import requests
 from bs4 import BeautifulSoup
 
-from flask import Flask, jsonify, make_response, abort
+from flask import Flask, jsonify, make_response, abort, url_for, redirect
 
 from models import FuelAccountNorm
 import utils
 
-app = Flask(__name__)
-# add UTF-8 support
-app.config['JSON_AS_ASCII'] = False
+def create_app():
+    app = Flask(__name__)
+    # add UTF-8 support
+    app.config['JSON_AS_ASCII'] = False
+
+    @app.route('/')
+    def index():
+        return redirect(url_for('root'))
+
+    @app.route('/api')
+    def root():
+        return make_response(jsonify({
+            'data': None,
+            'links': {
+                'self': "http://localhost:5000/api",
+                'uzemanyagarak': "http://localhost:5000/api/nav/uzemanyagarak/{year}/{month}",
+            }
+        }), 200)
 
 
-@app.route('/api')
-def root():
-    return make_response(jsonify({
-        'data': None,
-        'links': {
-            'self': "http://localhost:5000/api",
-            'uzemanyagarak': "http://localhost:5000/api/nav/uzemanyagarak/{year}/{month}",
-        }
-    }), 200)
+    @app.route('/api/nav/uzemanyagarak/<year>')
+    def getFuelNormByYear(year):
+        if utils.valid_year(year):
+            if utils.is_current_year(year):
+                return getFromCurrentYear(None)
+            else:
+                return getFromArchived(year, None)
+        return
 
 
-@app.route('/api/nav/uzemanyagarak/<year>')
-def getFuelNormByYear(year):
-    if utils.valid_year(year):
-        if utils.is_current_year(year):
-            return getFromCurrentYear(None)
-        else:
-            return getFromArchived(year, None)
-    return
+    @app.route('/api/nav/uzemanyagarak/<year>/<month>')
+    def getFuelNormByMonth(year, month):
+        if utils.valid_year(year) and utils.valid_month(month):
+            if utils.is_current_year(year):
+                return getFromCurrentYear(month)
+            else:
+                return getFromArchived(year, month)
+        return
+
+    @app.errorhandler(404)
+    def not_found(e):
+        response = jsonify({'status': 404, 'error': 'not found',
+                            'message': 'invalid resource URI'})
+        status_code = 404
+        return make_response(response, status_code)
 
 
-@app.route('/api/nav/uzemanyagarak/<year>/<month>')
-def getFuelNormByMonth(year, month):
-    if utils.valid_year(year) and utils.valid_month(month):
-        if utils.is_current_year(year):
-            return getFromCurrentYear(month)
-        else:
-            return getFromArchived(year, month)
-    return
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        response = jsonify({'status': 500, 'error': 'internal server error',
+                            'message': e.description})
+        status_code = 500
+        return make_response(response, status_code)
+
+    return app
 
 
 def getFromCurrentYear(month):
@@ -93,17 +114,6 @@ def crawl_page(URL):
     return data
 
 
-@app.errorhandler(404)
-def not_found(e):
-    response = jsonify({'status': 404, 'error': 'not found',
-                        'message': 'invalid resource URI'})
-    status_code = 404
-    return make_response(response, status_code)
-
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    response = jsonify({'status': 500, 'error': 'internal server error',
-                        'message': e.description})
-    status_code = 500
-    return make_response(response, status_code)
+if __name__ == "__main__":
+    app = create_app()
+    app.run()

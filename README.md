@@ -4,7 +4,6 @@ A NAV a weboldalán https://www.nav.gov.hu/ nyilvánosan  közzéteszi a tárgyh
 [Közlemény az üzemanyagárakról](https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html)
 
 # (EN)
----
 This service provides a specific API to get information from the open data source https://www.nav.gov.hu/ site about fuel cost accounting.
 
 ## How to run
@@ -55,13 +54,19 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 }
 ```
 
-# TODO:
+## How to test
+- Run tests with command: `pytest`
+    - Use the `-s` switch disables per-test capturing 
+
+---
+# TODO's:
 - [X] Implement get data from archived years
 - [ ] Cache crawled content up to 5min
 - [X] Error handling (unified api error response)
 - [ ] Add meta to response model with paging info
 - [ ] Implement pagination
-- [ ] Write some tests
+- [X] Write some tests - https://code.visualstudio.com/docs/python/testing
+- [ ] Setup Travis CI linting and build jobs
 
 
 
