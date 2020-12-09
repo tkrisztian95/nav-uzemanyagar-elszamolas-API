@@ -27,26 +27,19 @@ def create_app():
             'links': {
                 'self': "http://localhost:5000/api",
                 'uzemanyagarak': "http://localhost:5000/api/nav/uzemanyagarak/{year}/{month}",
-            }
+            },
+            'meta': buildMetaData("https://www.nav.gov.hu/")
         }), 200)
 
     @app.route('/api/nav/uzemanyagarak/<year>')
     def getFuelNormByYear(year):
-        if utils.valid_year(year):
-            if utils.is_current_year(year):
-                return getFromCurrentYear(None)
-            else:
-                return getFromArchived(year, None)
-        return
+        URL = prepareDataSourceURL(year)
+        return assembleJsonApiResponseModel(doGetData(URL), buildMetaData(URL))
 
     @app.route('/api/nav/uzemanyagarak/<year>/<month>')
     def getFuelNormByMonth(year, month):
-        if utils.valid_year(year) and utils.valid_month(month):
-            if utils.is_current_year(year):
-                return getFromCurrentYear(month)
-            else:
-                return getFromArchived(year, month)
-        return
+        URL = prepareDataSourceURL(year)
+        return assembleJsonApiResponseModel(doFilter(doGetData(URL), month), buildMetaData(URL))
 
     @app.errorhandler(404)
     def not_found(e):
@@ -65,19 +58,23 @@ def create_app():
     return app
 
 
-def getFromCurrentYear(month):
-    URL = "https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html"
-    data = CACHE.getOrLoad(URL, crawl_page, URL)
-    data = doFilter(data, month)
-    return jsonify(data=serialize(data), meta=buildMetaData(URL))
+def prepareDataSourceURL(year):
+    if utils.valid_year(year):
+        if utils.is_current_year(year):
+            URL = "https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html"
+        else:
+            URL = "https://www.nav.gov.hu/nav/archiv/szolgaltatasok/uzemanyag_elszamolas/{}_uzemanyagar.html".format(
+                year)
+    return URL
 
 
-def getFromArchived(year, month):
-    URL = "https://www.nav.gov.hu/nav/archiv/szolgaltatasok/uzemanyag_elszamolas/{}_uzemanyagar.html".format(
-        year)
+def doGetData(URL):
     data = CACHE.getOrLoad(URL, crawl_page, URL)
-    data = doFilter(data, month)
-    return jsonify(data=serialize(data), meta=buildMetaData(URL))
+    return data
+
+
+def assembleJsonApiResponseModel(data, meta):
+    return jsonify(data=serialize(data), meta=meta)
 
 
 def buildMetaData(URL):
@@ -86,8 +83,9 @@ def buildMetaData(URL):
         'source': URL
     }
 
+
 def doFilter(data, month):
-    if month != None:
+    if utils.valid_month(month):
         data = filter_by_month(data, month)
     return data
 
