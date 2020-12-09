@@ -64,9 +64,10 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 - [X] Cache crawled content 
 - [X] Auto evict cache after 1 min
 - [X] Error handling (unified api error response)
-- [ ] Add meta to response model with paging info
-- [ ] Implement pagination
+- [X] Add meta to response model with some info - https://jsonapi.org/format/#document-meta
+- [ ] Add support for paging
 - [X] Write some tests - https://code.visualstudio.com/docs/python/testing
+- [ ] Add Dockerfile
 - [ ] Setup Travis CI linting and build jobs
 
 
