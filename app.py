@@ -34,12 +34,18 @@ def create_app():
     @app.route('/api/nav/uzemanyagarak/<year>')
     def getFuelNormByYear(year):
         URL = prepareDataSourceURL(year)
-        return assembleJsonApiResponseModel(doGetData(URL), buildMetaData(URL))
+        meta = buildMetaData(URL)
+        result = doGetData(URL)
+        meta['total'] = len(result)
+        return assembleJsonApiResponseModel(result, meta)
 
     @app.route('/api/nav/uzemanyagarak/<year>/<month>')
     def getFuelNormByMonth(year, month):
         URL = prepareDataSourceURL(year)
-        return assembleJsonApiResponseModel(doFilter(doGetData(URL), month), buildMetaData(URL))
+        meta = buildMetaData(URL)
+        result = doFilter(doGetData(URL), month)
+        meta['total'] = len(result)
+        return assembleJsonApiResponseModel(result, meta)
 
     @app.errorhandler(404)
     def not_found(e):

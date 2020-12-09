@@ -27,6 +27,13 @@ def test_uzemanyagarak_2020_január(client):
     fuelAccountNorm_object = FuelAccountNorm(**first_item_dict)
     assert 'január' == fuelAccountNorm_object.month
 
+def test_uzemanyagarak_2020_január_meta_returned(client):
+    rv = client.get("/api/nav/uzemanyagarak/2020/január")
+    response_json = json.loads(rv.data)
+    assert 'meta' in response_json
+    assert "Tóth Krisztián Gyula" == response_json['meta']['author']
+    assert 1 == response_json['meta']['total']  
+
 def test_uzemanyagarak_2019(client):
     rv = client.get("/api/nav/uzemanyagarak/2019")
     response_json = json.loads(rv.data)
@@ -35,8 +42,9 @@ def test_uzemanyagarak_2019(client):
 def test_uzemanyagarak_2020_meta_returned(client):
     rv = client.get("/api/nav/uzemanyagarak/2020")
     response_json = json.loads(rv.data)
-    assert None != response_json['meta']
+    assert 'meta' in response_json
     assert "Tóth Krisztián Gyula" == response_json['meta']['author']
+    assert 12 == response_json['meta']['total']
 
 def test_root_meta_returned(client):
     rv = client.get("/api")
