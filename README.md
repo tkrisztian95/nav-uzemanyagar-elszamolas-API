@@ -67,6 +67,7 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 - [X] Auto evict cache after 1 min
 - [X] Error handling (unified api error response)
 - [X] Add meta to response model with some info - https://jsonapi.org/format/#document-meta
+- [ ] Add support for sorting - https://jsonapi.org/format/#fetching-sorting 
 - [X] Write some tests - https://code.visualstudio.com/docs/python/testing
 - [ ] Add Dockerfile
 - [ ] Introduce Redis for caching - https://realpython.com/python-redis/
