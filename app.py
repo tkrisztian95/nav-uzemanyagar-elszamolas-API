@@ -69,7 +69,7 @@ def getFromCurrentYear(month):
     URL = "https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html"
     data = CACHE.getOrLoad(URL, crawl_page, URL)
     data = doFilter(data, month)
-    return jsonify(data=serialize(data))
+    return jsonify(data=serialize(data), meta=buildMetaData(URL))
 
 
 def getFromArchived(year, month):
@@ -77,8 +77,14 @@ def getFromArchived(year, month):
         year)
     data = CACHE.getOrLoad(URL, crawl_page, URL)
     data = doFilter(data, month)
-    return jsonify(data=serialize(data))
+    return jsonify(data=serialize(data), meta=buildMetaData(URL))
 
+
+def buildMetaData(URL):
+    return {
+        'author': 'Tóth Krisztián Gyula',
+        'source': URL
+    }
 
 def doFilter(data, month):
     if month != None:
@@ -95,7 +101,7 @@ def serialize(data):
 
 
 def crawl_page(URL):
-    print('crawl_page()')
+    print('crawl_page({})'.format(URL))
     page = requests.get(URL)
     if page.status_code == 404:
         abort(404)
