@@ -4,10 +4,11 @@ from bs4 import BeautifulSoup
 from flask import Flask, jsonify, make_response, abort, url_for, redirect
 
 from models import FuelAccountNorm
-from cache import SimpleDataCache
+from cache import SimpleCache, TTLCache
 import utils
 
-CACHE = SimpleDataCache(debug=True)
+#CACHE = SimpleCache(debug=True)
+CACHE = TTLCache(evictAfterMinutes=5, debug=True)
 
 
 def create_app():

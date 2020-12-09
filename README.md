@@ -62,7 +62,7 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 # TODO's:
 - [X] Implement get data from archived years
 - [X] Cache crawled content 
-- [ ] Auto evict cache after 1 min
+- [X] Auto evict cache after 1 min
 - [X] Error handling (unified api error response)
 - [ ] Add meta to response model with paging info
 - [ ] Implement pagination
