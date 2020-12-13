@@ -1,5 +1,5 @@
 import time
-
+import redis
 
 class SimpleCache:
     def __init__(self, debug=False):
@@ -67,4 +67,4 @@ class CachedData:
         return self._data
 
     def get_time(self):
-        return self._time
+        return self._time  

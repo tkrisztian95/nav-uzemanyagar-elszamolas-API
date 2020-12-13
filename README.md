@@ -8,14 +8,27 @@ A NAV a weboldalán https://www.nav.gov.hu/ nyilvánosan  közzéteszi a tárgyh
 # (EN)
 This service provides a specific API to get information from the open data source https://www.nav.gov.hu/ site about fuel cost accounting.
 
+## Tech stack
+
+- Python with Flask web framework
+- Redis for caching
+- pip:
+    - flask
+    - requests
+    - beautifulsoup4
+    - pytest
+    - redis
+
 ## How to run
 - Install requirements with command: `pip install -r requirements`
 - Start Flask app with command: `flask run`
 
 ### APIs
-- /api
-- /api/nav/uzemanyagarak/{year}
-- /api/nav/uzemanyagarak/{year}/{month} 
+|Path|Description|Params|
+|--|--|--|
+|/api| Root (list all API routes)||
+|/api/nav/uzemanyagarak/{year}| Returns data by year| year - Possible values: 2020, 2019
+- /api/nav/uzemanyagarak/{year}/{month} |Returns |year - Possible values: 2020, 2019 month - Possible values: január, február,.. |
 
 ### Examples
 GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020
@@ -60,6 +73,47 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 - Run tests with command: `pytest`
     - Use the `-s` switch disables per-test capturing 
 
+## How to use Redis
+- Use command to connect via telnet interactive protocol: `telnet redis 6379`
+- To follow/debug whats happening send the `montior` command after connecting. (Gives you ability to see all the requests processed by the server)
+
+See command reference: https://redis.io/commands
+
+**Example:**
+```
+$ /workspace# telnet redis 6379
+Trying 172.19.0.2...
+Connected to redis.
+Escape character is '^]'.
+MONITOR
++OK
+^C //<- Hit CTRL+C to stop a MONITOR stream
+
+// Use command 'SET' with key (hello) to hold the string value "my string value".
+// Should return 'OK' if SET was executed correctly
+SET hello "my string value"
++1607894952.890850 [0 172.19.0.3:38230] "SET" "hello" "my string value"
++OK
+
+// Get the value of key (hello). 
+// Should return "my string value"
+GET hello
++1607894960.312599 [0 172.19.0.3:38230] "GET" "hello"
+$5
+my string value
+
+quit // Type 'quit' to exit and push 'ENTER'
+```
+
+Pros over the application in-memory caches:
+- App has smaller memory footprint
+- Even if the app was restarted or redeployed the data in Redis still available and can be returned immediately
+- Multiple instances of the app can use the same cache to serve request from stored data 
+
+Cons:
+- Cache eviction (requires an extra houskeeper service/job)
+- SPOF - Single point of Failure, if the Redis server is down the caching will be unavailable
+
 ---
 # TODO's:
 - [X] Implement get data from archived years
@@ -70,11 +124,13 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 - [ ] Add support for sorting - https://jsonapi.org/format/#fetching-sorting 
 - [X] Write some tests - https://code.visualstudio.com/docs/python/testing
 - [ ] Add Dockerfile
-- [ ] Introduce Redis for caching - https://realpython.com/python-redis/
-- [ ] App config for testing (should be configurable to use the custom in-memory cache during test run instead Redis)
+- [X] Introduce Redis for caching - https://realpython.com/python-redis/
+- [X] Add better configuration possibilites - https://hackersandslackers.com/configure-flask-applications/ 
+- [ ] Add seprated config for dev and prod (should be possible to configure different setups, e.g.: app caches to be in use during test run vs in prod use Redis)
 - [ ] Add Docker compose (redis + app image)
 - [ ] Add K8s stack (redis + app image)
 - [ ] Setup Travis CI linting and build jobs
+- [ ] Add badges: build, coverage
 
 
 
