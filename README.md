@@ -28,7 +28,7 @@ This service provides a specific API to get information from the open data sourc
 |--|--|--|
 |/api| Root (list all API routes)||
 |/api/nav/uzemanyagarak/{year}| Returns data by year| year - Possible values: 2020, 2019
-- /api/nav/uzemanyagarak/{year}/{month} |Returns |year - Possible values: 2020, 2019 month - Possible values: január, február,.. |
+|/api/nav/uzemanyagarak/{year}/{month} |Returns data by year and specific month |year - Possible values: 2020, 2019  month - Possible values (in HUN): január, február,.. |
 
 ### Examples
 GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020
