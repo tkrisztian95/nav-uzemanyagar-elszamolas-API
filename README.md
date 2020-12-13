@@ -133,7 +133,7 @@ Pros over the application in-memory caches:
 - App has smaller memory footprint
 - Even if the app was restarted or redeployed the data in Redis still available and can be returned immediately
 - Multiple instances of the app can use the same cache to serve request from stored data 
-- Many Cache eviction strategies (for TTL configure Redis cache eviction policy `volatile-ttl`)
+- Many Cache eviction strategies, [see more](https://redis.io/topics/lru-cache) (for TTL use `volatile-ttl`)
 
 Cons:
 - SPOF - Single point of Failure, if the Redis server is down the caching will be unavailable
