@@ -25,7 +25,8 @@ def create_app(test_config=None):
         app.config.update(test_config)
 
     if True == app.config["USE_REDIS_CACHE"]:
-        REDIS_CACHE = redis.Redis("redis")
+        redis_host = app.config["REDIS_HOST_URL"]
+        REDIS_CACHE = redis.Redis(host=redis_host)
 
     @app.route('/')
     def index():
