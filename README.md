@@ -31,6 +31,20 @@ This service provides a specific API to get information from the open data sourc
 |/api/nav/uzemanyagarak/{year}/{month} |Returns data by year and specific month |year - Possible values: 2020, 2019  month - Possible values (in HUN): január, február,.. |
 
 ### Examples
+GET: http://127.0.0.1:5000/api
+```
+{
+    "data": null,
+    "links": {
+        "self": "http://localhost:5000/api",
+        "uzemanyagarak": "http://localhost:5000/api/nav/uzemanyagarak/{year}/{month}"
+},
+    "meta": {
+        "author": "Tóth Krisztián Gyula",
+        "source": "https://www.nav.gov.hu/"
+    }
+}
+```
 GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020
 ```
 {
@@ -50,7 +64,12 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020
             "month": "november"
         },
         ...
-    ]
+    ],
+    "meta": {
+        "author": "Tóth Krisztián Gyula",
+        "source": "https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html",
+        "total": 12
+    }
 }
 ```
 
@@ -65,7 +84,12 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
             "mixed": "427",
             "month": "március"
         }
-    ]
+    ],
+    "meta": {
+        "author": "Tóth Krisztián Gyula",
+        "source": "https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html",
+        "total": 1
+    }
 }
 ```
 
