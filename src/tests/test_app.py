@@ -1,15 +1,17 @@
 # Third party modules
 import pytest
 import json
+import app
 
 # First party modules
-from app import create_app
-from models import FuelAccountNorm
+from app import app
+from app.app import create_app
+from app.models import FuelAccountNorm
 
 
 @pytest.fixture
 def client():
-    app = create_app()
+    app = create_app("../conf/test_config.py")
     with app.test_client() as client:
         yield client
 

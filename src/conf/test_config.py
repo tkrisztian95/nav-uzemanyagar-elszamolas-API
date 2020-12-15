@@ -1,4 +1,4 @@
-"""Flask configuration."""
+"""Test - Flask configuration."""
 
 # add UTF-8 support
 JSON_AS_ASCII = False

@@ -20,8 +20,9 @@ This service provides a specific API to get information from the open data sourc
     - redis
 
 ## How to run
-- Install requirements with command: `pip install -r requirements`
-- Start Flask app with command: `flask run`
+1. Install requirements with command: `pip install -r requirements`
+2. Step into `app` directory with command: `cd /src/app`
+3. Start Flask app with command: `flask run`
 
 ### APIs
 |Path|Description|Params|

@@ -1,11 +1,13 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 
 from flask import Flask, jsonify, make_response, abort, url_for, redirect
 
-from models import FuelAccountNorm
-from cache import SimpleCache, TTLCache
-import utils
+from app.models import FuelAccountNorm
+from app.cache import SimpleCache, TTLCache
+from app.default_config import Config
+import app.utils as utils
 import redis
 import json
 
@@ -14,15 +16,20 @@ CACHE = TTLCache(evictAfterMinutes=5, debug=True)
 REDIS_CACHE = None
 
 
-def create_app(test_config=None):
+def create_app(config=None):
     app = Flask(__name__)
 
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile("config.py", silent=True)
-    else:
-        # load the test config if passed in
-        app.config.update(test_config)
+    # load default configuration
+    app.config.from_object(Config)
+    # load environment configuration
+    if 'FLASK_CONF' in os.environ:
+        app.config.from_envvar('FLASK_CONF')
+    # load app sepcified configuration
+    if config is not None:
+        if isinstance(config, dict):
+            app.config.update(config)
+        elif config.endswith('.py'):
+            app.config.from_pyfile(config, silent=False)
 
     if True == app.config["USE_REDIS_CACHE"]:
         redis_host = app.config["REDIS_HOST_URL"]
