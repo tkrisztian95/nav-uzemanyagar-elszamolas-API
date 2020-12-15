@@ -151,7 +151,7 @@ Cons:
 - [ ] Add Dockerfile 
 - [X] Introduce Redis for caching - https://realpython.com/python-redis/
 - [X] Add better configuration possibilites - https://hackersandslackers.com/configure-flask-applications/ 
-- [ ] Add seprated config for dev and prod (should be possible to configure different setups, e.g.: app caches to be in use during test run vs in prod use Redis)
+- [X] Add seprated config for dev and prod (should be possible to configure different setups, e.g.: app caches to be in use during test run vs in prod use Redis)
 - [ ] Add Docker compose (redis + app image)
 - [ ] Add K8s stack, and scale up app instances 
 - [ ] Setup Travis CI linting and build jobs
