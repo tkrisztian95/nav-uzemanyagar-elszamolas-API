@@ -156,7 +156,7 @@ Cons:
 - [ ] Modularize project better, see: https://lepture.com/en/2018/structure-of-a-flask-project 
 - [ ] Add Docker compose (redis + app image)
 - [ ] Add K8s stack, and scale up app instances 
-- [ ] Setup Travis CI linting and build jobs
+- [X] Setup Travis CI linting and build jobs
 - [ ] Add badges: build, coverage
 
 
