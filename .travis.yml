@@ -7,4 +7,5 @@ install:
 # command to run tests
 script:
   #- pytest --pylint
-  - pytest --flake8
+  #- pytest --flake8
+  - pytest
