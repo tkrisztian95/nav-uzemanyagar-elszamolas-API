@@ -178,6 +178,7 @@ Cons:
 - [X] Introduce Redis for caching - <https://realpython.com/python-redis/>
 - [X] Add better configuration possibilites - <https://hackersandslackers.com/configure-flask-applications/>
 - [X] Add seprated config for dev and prod (should be possible to configure different setups, e.g.: app caches to be in use during test run vs in prod use Redis)
+- [ ] Make it possible to configure/override default config when app is running inside Docker container
 - [ ] Modularize project better, see: <https://lepture.com/en/2018/structure-of-a-flask-project>
 - [ ] Add Docker compose (redis + app image)
 - [ ] Add K8s stack, and scale up app instances
