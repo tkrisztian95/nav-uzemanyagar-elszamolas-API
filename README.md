@@ -151,24 +151,30 @@ Pros over the application in-memory caches:
 
 - App has smaller memory footprint
 - Even if the app was restarted or redeployed the data in Redis still available and can be returned immediately
-- Multiple instances of the app can use the same cache to serve request from stored data 
+- Multiple instances of the app can use the same cache to serve request from stored data
 - Many Cache eviction strategies, [see more](https://redis.io/topics/lru-cache) (for TTL use `volatile-ttl`)
 
 Cons:
 
 - SPOF - Single point of Failure, if the Redis server is down the caching will be unavailable
 
+## How to build & run with Docker
+
+- To build a Docker image run command `docker build -t nav-api:first .`
+- To start container run command `docker run -p 5000:5000  nav-api:first`
+
 ---
+
 # TODO's:
 
 - [X] Implement get data from archived years
-- [X] Cache crawled content 
+- [X] Cache crawled content
 - [X] Auto evict cache after 1 min
 - [X] Error handling (unified api error response)
 - [X] Add meta to response model with some info - <https://jsonapi.org/format/#document-meta>
 - [ ] Add support for sorting - <https://jsonapi.org/format/#fetching-sorting>
 - [X] Write some tests - <https://code.visualstudio.com/docs/python/testing>
-- [ ] Add Dockerfile
+- [X] Add Dockerfile
 - [X] Introduce Redis for caching - <https://realpython.com/python-redis/>
 - [X] Add better configuration possibilites - <https://hackersandslackers.com/configure-flask-applications/>
 - [X] Add seprated config for dev and prod (should be possible to configure different setups, e.g.: app caches to be in use during test run vs in prod use Redis)
