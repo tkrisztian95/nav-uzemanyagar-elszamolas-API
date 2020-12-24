@@ -21,7 +21,7 @@ This service provides a specific API to get information from the open data sourc
     - redis
 
 ## How to run
-1. Install requirements with command: `pip install -r requirements`
+1. Install requirements with command: `pip install -r requirements.txt`
 2. Step into `app` directory with command: `cd /src/app`
 3. Start Flask app with command: `flask run`
 
@@ -96,7 +96,8 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 ```
 
 ## How to test
-- Run tests with command: `pytest`
+1. Install all requirements with command: `pip install -r requirements.txt -r requirements-dev.txt`
+2. Run tests with command: `pytest`
     - Use the `-s` switch disables per-test capturing 
 
 ## How to use Redis
