@@ -1,31 +1,38 @@
-# NAV üzemanyagár elszámolás API 
+# NAV üzemanyagár elszámolás API
+
 [![Build Status](https://travis-ci.com/tkrisztian95/nav-uzemanyagar-elszamolas-API.svg?branch=main)](https://travis-ci.com/tkrisztian95/nav-uzemanyagar-elszamolas-API)
+
 ## Hobbi Python projekt
+
 ### Leírás
-A NAV a weboldalán https://www.nav.gov.hu/ nyilvánosan  közzéteszi a tárgyhónapban a fogyasztási norma szerinti üzemanyagköltség-elszámolással kapcsolatosan alkalmazható üzemanyagárat. Ez a program az innen származó táblázatok tartalmát olvassa és biztosít egy program interfészt (API) az információ lekérdezéshez.
+
+A NAV a weboldalán <https://www.nav.gov.hu/> nyilvánosan  közzéteszi a tárgyhónapban a fogyasztási norma szerinti üzemanyagköltség-elszámolással kapcsolatosan alkalmazható üzemanyagárat. Ez a program az innen származó táblázatok tartalmát olvassa és biztosít egy program interfészt (API) az információ lekérdezéshez.
 
 [Közlemény az üzemanyagárakról](https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html)
 
-# (EN) 
-This service provides a specific API to get information from the open data source https://www.nav.gov.hu/ site about fuel cost accounting.
+# (EN)
+
+This service provides a specific API to get information from the open data source <https://www.nav.gov.hu/> site about fuel cost accounting.
 
 ## Tech stack
 
 - Python with Flask web framework
 - Redis for caching
 - pip:
-    - flask
-    - requests
-    - beautifulsoup4
-    - pytest
-    - redis
+  - flask
+  - requests
+  - beautifulsoup4
+  - pytest
+  - redis
 
 ## How to run
+
 1. Install requirements with command: `pip install -r requirements.txt`
 2. Step into `app` directory with command: `cd /src/app`
 3. Start Flask app with command: `flask run`
 
 ### APIs
+
 |Path|Description|Params|
 |--|--|--|
 |/api| Root (list all API routes)||
@@ -33,8 +40,10 @@ This service provides a specific API to get information from the open data sourc
 |/api/nav/uzemanyagarak/{year}/{month} |Returns data by year and specific month |year - Possible values: 2020, 2019  month - Possible values (in HUN): január, február,.. |
 
 ### Examples
-GET: http://127.0.0.1:5000/api
-```
+
+GET: <http://127.0.0.1:5000/api>
+
+```json
 {
     "data": null,
     "links": {
@@ -47,8 +56,10 @@ GET: http://127.0.0.1:5000/api
     }
 }
 ```
-GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020
-```
+
+GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020>
+
+```json
 {
     "data": [
         {
@@ -75,8 +86,9 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020
 }
 ```
 
-GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
-```
+GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius>
+
+```json
 {
     "data": [
         {
@@ -96,19 +108,22 @@ GET: http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius
 ```
 
 ## How to test
+
 1. Install all requirements with command: `pip install -r requirements.txt -r requirements-dev.txt`
 2. Run tests with command: `pytest`
     - Use the `-s` switch disables per-test capturing 
 
 ## How to use Redis
+
 - Use command to connect via telnet interactive protocol: `telnet redis 6379`
 - To follow/debug whats happening send the `montior` command after connecting. (Gives you ability to see all the requests processed by the server)
 
-See command reference: https://redis.io/commands
+See command reference: <https://redis.io/commands>
 
 **Example:**
-```
-$ /workspace# telnet redis 6379
+
+```console
+$ /workspace telnet redis 6379
 Trying 172.19.0.2...
 Connected to redis.
 Escape character is '^]'.
@@ -133,32 +148,32 @@ quit // Type 'quit' to exit and push 'ENTER'
 ```
 
 Pros over the application in-memory caches:
+
 - App has smaller memory footprint
 - Even if the app was restarted or redeployed the data in Redis still available and can be returned immediately
 - Multiple instances of the app can use the same cache to serve request from stored data 
 - Many Cache eviction strategies, [see more](https://redis.io/topics/lru-cache) (for TTL use `volatile-ttl`)
 
 Cons:
+
 - SPOF - Single point of Failure, if the Redis server is down the caching will be unavailable
 
 ---
 # TODO's:
+
 - [X] Implement get data from archived years
 - [X] Cache crawled content 
 - [X] Auto evict cache after 1 min
 - [X] Error handling (unified api error response)
-- [X] Add meta to response model with some info - https://jsonapi.org/format/#document-meta
-- [ ] Add support for sorting - https://jsonapi.org/format/#fetching-sorting 
-- [X] Write some tests - https://code.visualstudio.com/docs/python/testing
-- [ ] Add Dockerfile 
-- [X] Introduce Redis for caching - https://realpython.com/python-redis/
-- [X] Add better configuration possibilites - https://hackersandslackers.com/configure-flask-applications/ 
+- [X] Add meta to response model with some info - <https://jsonapi.org/format/#document-meta>
+- [ ] Add support for sorting - <https://jsonapi.org/format/#fetching-sorting>
+- [X] Write some tests - <https://code.visualstudio.com/docs/python/testing>
+- [ ] Add Dockerfile
+- [X] Introduce Redis for caching - <https://realpython.com/python-redis/>
+- [X] Add better configuration possibilites - <https://hackersandslackers.com/configure-flask-applications/>
 - [X] Add seprated config for dev and prod (should be possible to configure different setups, e.g.: app caches to be in use during test run vs in prod use Redis)
-- [ ] Modularize project better, see: https://lepture.com/en/2018/structure-of-a-flask-project 
+- [ ] Modularize project better, see: <https://lepture.com/en/2018/structure-of-a-flask-project>
 - [ ] Add Docker compose (redis + app image)
-- [ ] Add K8s stack, and scale up app instances 
+- [ ] Add K8s stack, and scale up app instances
 - [X] Setup Travis CI linting and build jobs
 - [ ] Add badges: build, coverage
-
-
-
