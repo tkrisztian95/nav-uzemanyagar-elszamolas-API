@@ -90,7 +90,7 @@ GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020>
 }
 ```
 
-#### Filter by month
+#### Filtering (?filter[attribute]=value)
 
 GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020?filter[month]=december>
 
@@ -109,6 +109,65 @@ GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020?filter[month]=december>
         "author": "Tóth Krisztián Gyula",
         "source": "https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html",
         "total": 1
+    }
+}
+```
+
+#### Sorting ('?sort=attribute' or DESC '?sort=-attribute')
+
+GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020?sort=mixed>
+
+```json
+{
+"data": [
+    {
+        "benzin": "293",
+        "diesel": "326",
+        "lpg": "226",
+        "mixed": "330",
+        "month": "június"
+    },
+    {
+        "benzin": "297",
+        "diesel": "342",
+        "lpg": "231",
+        "mixed": "334",
+        "month": "május"
+    },
+    {
+        "benzin": "345",
+        "diesel": "357",
+        "lpg": "220",
+        "mixed": "382",
+        "month": "július"
+    },
+    {
+        "benzin": "364",
+        "diesel": "372",
+        "lpg": "247",
+        "mixed": "401",
+        "month": "december"
+    },
+    {
+        "benzin": "371",
+        "diesel": "386",
+        "lpg": "238",
+        "mixed": "408",
+        "month": "szeptember"
+    },
+    {
+        "benzin": "373",
+        "diesel": "386",
+        "lpg": "228",
+        "mixed": "410",
+        "month": "augusztus"
+    },
+        ...
+    ],
+    "meta": {
+        "author": "Tóth Krisztián Gyula",
+        "source": "https://www.nav.gov.hu/nav/szolgaltatasok/uzemanyag/uzemanyagarak/uzemanyagar.html",
+        "total": 12
     }
 }
 ```
@@ -181,8 +240,8 @@ The compose up process will build a new Docker image locally from the Python sou
 - [X] Auto evict cache after 1 min
 - [X] Error handling (unified api error response)
 - [X] Add meta to response model with some info - <https://jsonapi.org/format/#document-meta>
-- [ ] Add support for filtering - <https://jsonapi.org/format/#fetching-filtering>
-- [ ] Add support for sorting - <https://jsonapi.org/format/#fetching-sorting>
+- [X] Add support for filtering - <https://jsonapi.org/format/#fetching-filtering>
+- [X] Add support for sorting - <https://jsonapi.org/format/#fetching-sorting>
 - [X] Write some tests - <https://code.visualstudio.com/docs/python/testing>
 - [X] Add Dockerfile
 - [X] Introduce Redis for caching - <https://realpython.com/python-redis/>
