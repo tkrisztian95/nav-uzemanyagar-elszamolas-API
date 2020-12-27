@@ -179,9 +179,9 @@ The compose up process will build a new Docker image locally from the Python sou
 - [X] Write some tests - <https://code.visualstudio.com/docs/python/testing>
 - [X] Add Dockerfile
 - [X] Introduce Redis for caching - <https://realpython.com/python-redis/>
-- [X] Add better configuration possibilites - <https://hackersandslackers.com/configure-flask-applications/>
+- [X] Add better configuration possibilites - <https://hackersandslackers.com/configure-flask-applications/> and <https://prettyprinted.com/tutorials/automatically_load_environment_variables_in_flask>
 - [X] Add seprated config for dev and prod (should be possible to configure different setups, e.g.: app caches to be in use during test run vs in prod use Redis)
-- [ ] Make it possible to configure/override default config when app is running inside Docker container
+- [X] Make it possible to configure/override default config when app is running inside Docker container (using env variable `FLASK_CONF` to specify bind mounted config file location inside the running container and to load configs via compose)
 - [ ] Modularize project better, see: <https://lepture.com/en/2018/structure-of-a-flask-project>
 - [X] Add Docker compose (redis + app image)
 - [ ] Add K8s stack, and scale up app instances
