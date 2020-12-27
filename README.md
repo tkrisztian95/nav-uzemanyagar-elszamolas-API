@@ -160,8 +160,11 @@ Cons:
 
 ## How to build & run with Docker
 
-- To build a Docker image run command `docker build -t nav-api:first .`
-- To start container run command `docker run -p 5000:5000  nav-api:first`
+In order to simply setup with compose use command `docker-compose up` in the project root directory.
+The compose up process will build a new Docker image locally from the Python source and start the service among with Redis.
+
+- To build a Docker image with custom tag use `docker build -t nav-api:first .`
+- To start a container from the built image after then you can use `docker run -p 5000:5000  nav-api:first`
 
 ---
 
@@ -180,7 +183,7 @@ Cons:
 - [X] Add seprated config for dev and prod (should be possible to configure different setups, e.g.: app caches to be in use during test run vs in prod use Redis)
 - [ ] Make it possible to configure/override default config when app is running inside Docker container
 - [ ] Modularize project better, see: <https://lepture.com/en/2018/structure-of-a-flask-project>
-- [ ] Add Docker compose (redis + app image)
+- [X] Add Docker compose (redis + app image)
 - [ ] Add K8s stack, and scale up app instances
 - [X] Setup Travis CI linting and build jobs
-- [ ] Add badges: build, coverage
+- [X] Add badges: build
