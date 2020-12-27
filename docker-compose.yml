@@ -9,7 +9,7 @@ services:
 
   cache:
     image: "redis:alpine"
-    container_name: redis-nav-uzemanyagar-api-cache
+    container_name: nav-uzemanyagar-api-cache
     ports:
       - 6379:6379
 
