@@ -1,8 +1,9 @@
 import os
+import re
 import requests
 from bs4 import BeautifulSoup
 
-from flask import Flask, jsonify, make_response, abort, url_for, redirect
+from flask import Flask, jsonify, make_response, abort, url_for, redirect, request
 
 from app.models import FuelAccountNorm
 from app.cache import SimpleCache, TTLCache
@@ -45,24 +46,18 @@ def create_app(config=None):
             'data': None,
             'links': {
                 'self': "http://localhost:5000/api",
-                'uzemanyagarak': "http://localhost:5000/api/nav/uzemanyagarak/{year}/{month}",
+                'uzemanyagarak': "http://localhost:5000/api/nav/uzemanyagarak/{year}",
             },
             'meta': buildMetaData("https://www.nav.gov.hu/")
         }), 200)
 
     @app.route('/api/nav/uzemanyagarak/<year>')
     def getFuelNormByYear(year):
+        queryStringDict = request.args
+        filters = {k: v for k,v in queryStringDict.items() if k.startswith("filter")}
         URL = prepareDataSourceURL(year)
         meta = buildMetaData(URL)
-        result = doGetData(URL)
-        meta['total'] = len(result)
-        return assembleJsonApiResponseModel(result, meta)
-
-    @app.route('/api/nav/uzemanyagarak/<year>/<month>')
-    def getFuelNormByMonth(year, month):
-        URL = prepareDataSourceURL(year)
-        meta = buildMetaData(URL)
-        result = doFilter(doGetData(URL), month)
+        result = doFilter(doGetData(URL), filters)
         meta['total'] = len(result)
         return assembleJsonApiResponseModel(result, meta)
 
@@ -114,13 +109,18 @@ def create_app(config=None):
             'source': URL
         }
 
-    def doFilter(data, month):
-        if utils.valid_month(month):
-            data = filter_by_month(data, month)
+    def doFilter(data, filters):
+        if filters is not None:
+            for key, value in filters.items():
+                attr = re.findall("\[(.*?)\]", key)[0]
+                if attr == "month":
+                    data = filter_by_month(data, value)
         return data
 
     def filter_by_month(data, month):
-        return [next((x for x in data if x.month == month), None)]
+        if utils.valid_month(month):
+            return [next((x for x in data if x.month == month), None)]
+        return data
 
     def serialize(data):
         return list(map(lambda item: item.serialize(), data))

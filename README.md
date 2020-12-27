@@ -41,6 +41,8 @@ This service provides a specific API to get information from the open data sourc
 
 ### Examples
 
+#### Root API 
+
 GET: <http://127.0.0.1:5000/api>
 
 ```json
@@ -48,7 +50,7 @@ GET: <http://127.0.0.1:5000/api>
     "data": null,
     "links": {
         "self": "http://localhost:5000/api",
-        "uzemanyagarak": "http://localhost:5000/api/nav/uzemanyagarak/{year}/{month}"
+        "uzemanyagarak": "http://localhost:5000/api/nav/uzemanyagarak/{year}"
 },
     "meta": {
         "author": "Tóth Krisztián Gyula",
@@ -56,6 +58,8 @@ GET: <http://127.0.0.1:5000/api>
     }
 }
 ```
+
+#### Get data by year
 
 GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020>
 
@@ -86,7 +90,9 @@ GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020>
 }
 ```
 
-GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius>
+#### Filter by month
+
+GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020?filter[month]=december>
 
 ```json
 {
@@ -96,7 +102,7 @@ GET: <http://127.0.0.1:5000/api/nav/uzemanyagarak/2020/m%C3%A1rcius>
             "diesel": "406",
             "lpg": "256",
             "mixed": "427",
-            "month": "március"
+            "month": "december"
         }
     ],
     "meta": {
@@ -175,6 +181,7 @@ The compose up process will build a new Docker image locally from the Python sou
 - [X] Auto evict cache after 1 min
 - [X] Error handling (unified api error response)
 - [X] Add meta to response model with some info - <https://jsonapi.org/format/#document-meta>
+- [ ] Add support for filtering - <https://jsonapi.org/format/#fetching-filtering>
 - [ ] Add support for sorting - <https://jsonapi.org/format/#fetching-sorting>
 - [X] Write some tests - <https://code.visualstudio.com/docs/python/testing>
 - [X] Add Dockerfile
@@ -184,6 +191,5 @@ The compose up process will build a new Docker image locally from the Python sou
 - [X] Make it possible to configure/override default config when app is running inside Docker container (using env variable `FLASK_CONF` to specify bind mounted config file location inside the running container and to load configs via compose)
 - [ ] Modularize project better, see: <https://lepture.com/en/2018/structure-of-a-flask-project>
 - [X] Add Docker compose (redis + app image)
-- [ ] Add K8s stack, and scale up app instances
 - [X] Setup Travis CI linting and build jobs
 - [X] Add badges: build

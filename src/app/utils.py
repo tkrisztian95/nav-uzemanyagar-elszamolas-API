@@ -1,4 +1,5 @@
 import datetime
+import re
 
 
 def valid_year(year):
@@ -18,3 +19,7 @@ def is_current_year(year):
         year = int(year)
         if year == currentYear:
             return year
+
+def strip(input):
+    return re.sub(r"[\n\t\s]*", "", input)
+
