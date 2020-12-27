@@ -6,6 +6,9 @@ class FuelAccountNorm:
         self.diesel = diesel.strip()
         self.mixed = mixed.strip()
         self.lpg = lpg.strip()
+    
+    def __getitem__(self, item):
+       return getattr(self, item)
 
     def serialize(self):
         return {

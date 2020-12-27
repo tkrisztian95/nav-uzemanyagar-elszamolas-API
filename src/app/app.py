@@ -54,10 +54,13 @@ def create_app(config=None):
     @app.route('/api/nav/uzemanyagarak/<year>')
     def getFuelNormByYear(year):
         queryStringDict = request.args
-        filters = {k: v for k,v in queryStringDict.items() if k.startswith("filter")}
+        filters = {k: v for k, v in queryStringDict.items()
+                   if k.startswith("filter")}
+        orders = {k: v for k, v in queryStringDict.items()
+                  if k.startswith("sort")}
         URL = prepareDataSourceURL(year)
+        result = doSort(doFilter(doGetData(URL), filters), orders)
         meta = buildMetaData(URL)
-        result = doFilter(doGetData(URL), filters)
         meta['total'] = len(result)
         return assembleJsonApiResponseModel(result, meta)
 
@@ -115,6 +118,18 @@ def create_app(config=None):
                 attr = re.findall("\[(.*?)\]", key)[0]
                 if attr == "month":
                     data = filter_by_month(data, value)
+        return data
+
+    def doSort(data, orders):
+        if orders is not None:
+            for key, value in orders.items():
+                attributes = value.split(",")
+                for attr in attributes:
+                    reverse = False
+                    if attr.startswith("-"):
+                        attr = attr[1:]
+                        reverse = True
+                    data.sort(reverse=reverse, key=lambda e: e[attr])
         return data
 
     def filter_by_month(data, month):
