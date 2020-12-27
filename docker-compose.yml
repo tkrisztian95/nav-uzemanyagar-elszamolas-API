@@ -3,9 +3,13 @@ version: '3'
 services:
   app:
     build: .
-    container_name: nav-uzemanyagar-api
+    container_name: nav-uzemanyagar-api-backend
     ports:
       - 5000:5000
+    environment:
+      - FLASK_CONF=/home/worker/override_config.py
+    volumes:
+      - ./override_config.py:/home/worker/override_config.py
 
   cache:
     image: "redis:alpine"
